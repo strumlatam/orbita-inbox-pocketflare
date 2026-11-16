@@ -8,8 +8,13 @@ routes = [
   { pattern = "ingest.usestrum.app", custom_domain = true }
 ]
 
+send_email = [
+  { name = "EMAIL" }
+]
+
 [vars]
 POCKETFLARE_APP_URL = "https://ingest.usestrum.app"
+POCKETFLARE_MAIL_PROVIDER = "cloudflare"
 POCKETFLARE_STORAGE_BUCKET_NAME = "orbita-inbox-pocketflare-storage"
 POCKETFLARE_BACKUPS_BUCKET_NAME = "orbita-inbox-pocketflare-backups"
 INBOX_TOKEN = ""

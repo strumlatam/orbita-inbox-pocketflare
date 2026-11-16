@@ -5,7 +5,7 @@ build: admin-ui-overlays
 	GOOS=js GOARCH=wasm go build -tags no_default_driver -trimpath -ldflags="-s -w" -o dist/app.wasm ./cmd/pocketflare
 	cp "$$(go env GOROOT)/lib/wasm/wasm_exec.js" dist/
 	git apply --directory=dist runtime/wasm_exec.patch
-	cp worker.mjs runtime.mjs app-do.mjs realtime-do.mjs smtp-transport.mjs dist/
+	cp worker.mjs runtime.mjs app-do.mjs realtime-do.mjs smtp-transport.mjs cloudflare-email.mjs dist/
 
 deploy: build
 	pnpm exec wrangler deploy

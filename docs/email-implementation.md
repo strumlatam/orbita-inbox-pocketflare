@@ -35,12 +35,29 @@ pnpm exec wrangler secret put POCKETFLARE_MAIL_API_KEY
 
 Supported `POCKETFLARE_MAIL_PROVIDER` values:
 
+- `cloudflare` (Cloudflare Email Sending via `send_email` binding — no API key needed)
 - `resend`
 - `postmark`
 - `sendgrid`
 - `mailgun`
 - `webhook`
 - `smtp`
+
+## Cloudflare Email Sending
+
+Native integration with Cloudflare Email Service using Workers `send_email` binding:
+
+```toml
+send_email = [
+  { name = "EMAIL" }
+]
+
+[vars]
+POCKETFLARE_MAIL_PROVIDER = "cloudflare"
+```
+
+No secrets or API keys are required; outbound delivery is authenticated through the Worker binding.
+If `POCKETFLARE_MAIL_PROVIDER` is unset and PocketBase SMTP is disabled, Pocketflare automatically defaults to Cloudflare Email Sending when the `EMAIL` binding is present.
 
 Mailgun also needs:
 

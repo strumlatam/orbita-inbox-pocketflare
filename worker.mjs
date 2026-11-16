@@ -3,6 +3,7 @@ import { createRuntimeContext, loadModule } from "./runtime.mjs";
 import { AppDO } from "./app-do.mjs";
 import { RealtimeDO } from "./realtime-do.mjs";
 import { registerSmtpTransport } from "./smtp-transport.mjs";
+import { registerCloudflareEmailTransport } from "./cloudflare-email.mjs";
 
 async function run(ctx, metrics) {
   metrics.smtpRegisterStart = performance.now();
@@ -12,6 +13,11 @@ async function run(ctx, metrics) {
   } catch (_) {
     // SMTP transport unavailable — non-SMTP deployments are unaffected.
     // Go will report a clear error at send time if SMTP is configured.
+  }
+  try {
+    registerCloudflareEmailTransport(() => runtimeContext?.env);
+  } catch (_) {
+    // Cloudflare email transport unavailable.
   }
   metrics.smtpRegisterDone = performance.now();
 

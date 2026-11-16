@@ -203,22 +203,28 @@ func registerMailer(app *pocketbase.PocketBase, config Config) {
 		return
 	}
 
-	// Priority 3: SMTP via PocketBase admin SMTP settings (on-demand).
+	// Priority 3: SMTP via PocketBase admin SMTP settings (on-demand), or Cloudflare Email fallback.
 	app.OnMailerSend().BindFunc(func(e *core.MailerEvent) error {
 		s := app.Settings().SMTP
-		if !s.Enabled {
-			return e.Next() // no mailer configured; PB will log a warning
+		if s.Enabled {
+			e.Mailer = &mail.SMTPClient{
+				Host:       s.Host,
+				Port:       s.Port,
+				Username:   s.Username,
+				Password:   s.Password,
+				TLS:        s.TLS,
+				AuthMethod: s.AuthMethod,
+				LocalName:  s.LocalName,
+			}
+			return e.Next()
 		}
-		e.Mailer = &mail.SMTPClient{
-			Host:       s.Host,
-			Port:       s.Port,
-			Username:   s.Username,
-			Password:   s.Password,
-			TLS:        s.TLS,
-			AuthMethod: s.AuthMethod,
-			LocalName:  s.LocalName,
+
+		if mail.IsCloudflareAvailable() {
+			e.Mailer = mail.NewCloudflareProvider()
+			return e.Next()
 		}
-		return e.Next()
+
+		return e.Next() // no mailer configured; PB will log a warning
 	})
 }
 

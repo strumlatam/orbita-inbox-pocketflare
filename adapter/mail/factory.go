@@ -11,6 +11,7 @@ import (
 // NewHTTPMailer returns a mailer.Mailer for the named HTTP mail provider.
 //
 // Supported providers:
+//   - "cloudflare" — Cloudflare Email Sending (via send_email binding)
 //   - "resend"    — api.resend.com
 //   - "postmark"  — api.postmarkapp.com
 //   - "sendgrid"  — api.sendgrid.com
@@ -18,6 +19,8 @@ import (
 //   - "webhook"   — generic JSON webhook (uses url and token)
 func NewHTTPMailer(name, apiKey, domain, webhookURL, webhookToken string) (mailer.Mailer, error) {
 	switch name {
+	case "cloudflare", "cf", "cloudflare-email":
+		return NewCloudflareProvider(), nil
 	case "resend":
 		return &resendProvider{apiKey: apiKey}, nil
 	case "postmark":

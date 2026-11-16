@@ -9,6 +9,7 @@
 import "./wasm_exec.js";
 import { createRuntimeContext, loadModule } from "./runtime.mjs";
 import { registerSmtpTransport } from "./smtp-transport.mjs";
+import { registerCloudflareEmailTransport } from "./cloudflare-email.mjs";
 
 export class AppDO {
   constructor(ctx, env) {
@@ -207,6 +208,11 @@ export class AppDO {
       registerSmtpTransport();
     } catch (_) {
       // SMTP transport unavailable. HTTP mail providers and non-mail paths continue.
+    }
+    try {
+      registerCloudflareEmailTransport(() => this.env);
+    } catch (_) {
+      // Cloudflare email transport unavailable.
     }
     metrics.smtpRegisterDone = performance.now();
 
