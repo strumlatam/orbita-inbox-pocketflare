@@ -1,9 +1,13 @@
-name = "pocketflare"
+name = "orbita-inbox-pocketflare"
 main = "dist/worker.mjs"
 compatibility_date = "2025-05-30"
 
 [vars]
-POCKETFLARE_APP_URL = "https://pocketflare.garage.workers.dev"
+POCKETFLARE_APP_URL = "https://orbita-inbox-pocketflare.strumlatam.workers.dev"
+POCKETFLARE_STORAGE_BUCKET_NAME = "orbita-inbox-pocketflare-storage"
+POCKETFLARE_BACKUPS_BUCKET_NAME = "orbita-inbox-pocketflare-backups"
+INBOX_TOKEN = ""
+INBOX_RETENTION_DAYS = "90"
 # POCKETFLARE_DB_MODE = "d1" # default; set to "do_sqlite" for Durable Object SQLite mode
 
 # File copies stream through the Worker with bounded memory.
@@ -12,21 +16,21 @@ POCKETFLARE_APP_URL = "https://pocketflare.garage.workers.dev"
 
 [[d1_databases]]
 binding = "APP_DB"
-database_name = "pocketflare-app"
-database_id = "57bf4f7d-ff45-45b6-a110-b68877326067"
+database_name = "orbita-inbox-pocketflare-app"
+database_id = "0a0d31c8-8f4d-40cd-b589-b40d5d3dc813"
 
 [[d1_databases]]
 binding = "LOGS_DB"
-database_name = "pocketflare-logs"
-database_id = "ad0c39fe-356d-49b0-973a-7fa79028d3d5"
+database_name = "orbita-inbox-pocketflare-logs"
+database_id = "87189998-4c1a-42f0-acea-0e7b1de38c21"
 
 [[r2_buckets]]
 binding = "STORAGE"
-bucket_name = "pocketflare-storage"
+bucket_name = "orbita-inbox-pocketflare-storage"
 
 [[r2_buckets]]
 binding = "BACKUPS"
-bucket_name = "pocketflare-backups"
+bucket_name = "orbita-inbox-pocketflare-backups"
 
 [assets]
 directory = "./dist/admin-ui"

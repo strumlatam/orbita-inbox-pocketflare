@@ -27,6 +27,7 @@ func main() {
 		MailWebhookToken:  os.Getenv("POCKETFLARE_MAIL_WEBHOOK_TOKEN"),
 		StorageBucketName: trimmedEnv("POCKETFLARE_STORAGE_BUCKET_NAME"),
 		BackupsBucketName: trimmedEnv("POCKETFLARE_BACKUPS_BUCKET_NAME"),
+		AppMigrations:     inboxMigrations(),
 	})
 	if err != nil {
 		log.Fatalf("failed to initialize PocketBase: %v", err)
@@ -36,6 +37,9 @@ func main() {
 			log.Printf("cleanup error: %v", err)
 		}
 	}()
+
+	registerInboxRoutes(pb, router)
+	registerRetentionCron(pb)
 
 	handler, err := router.BuildMux()
 	if err != nil {
