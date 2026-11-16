@@ -97,9 +97,15 @@ async function getBinding(env, ctx) {
         runtimeReady = false;
         throw err;
       });
+    if (ctx?.waitUntil) {
+      try { ctx.waitUntil(runtimePromise); } catch {}
+    }
   } else {
     runtimeContext.env = env;
     runtimeContext.ctx = ctx;
+    if (ctx?.waitUntil && !runtimeReady && runtimePromise) {
+      try { ctx.waitUntil(runtimePromise); } catch {}
+    }
   }
 
   return runtimePromise;

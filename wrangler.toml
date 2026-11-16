@@ -1,9 +1,15 @@
 name = "orbita-inbox-pocketflare"
 main = "dist/worker.mjs"
 compatibility_date = "2025-05-30"
+compatibility_flags = ["no_handle_cross_request_promise_resolution"]
+workers_dev = true
+
+routes = [
+  { pattern = "ingest.usestrum.app", custom_domain = true }
+]
 
 [vars]
-POCKETFLARE_APP_URL = "https://orbita-inbox-pocketflare.strumlatam.workers.dev"
+POCKETFLARE_APP_URL = "https://ingest.usestrum.app"
 POCKETFLARE_STORAGE_BUCKET_NAME = "orbita-inbox-pocketflare-storage"
 POCKETFLARE_BACKUPS_BUCKET_NAME = "orbita-inbox-pocketflare-backups"
 INBOX_TOKEN = ""
